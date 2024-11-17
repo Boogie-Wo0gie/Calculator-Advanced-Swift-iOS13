@@ -11,26 +11,28 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
+    
     private var isFinishedTypingNumber: Bool = true
+    
+    private var displayValue: Double {
+        get {
+            guard let number = Double(displayLabel.text!) else {
+                fatalError("Невозможно преобразовать текст отображаемой метки в Double")
+            }
+            return number
+        } set {
+            displayLabel.text = String(newValue)
+        }
+    }
     
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         isFinishedTypingNumber = true
         //What should happen when a non-number button is pressed
         
-        guard let number = Double(displayLabel.text!) else {
-            fatalError("Невозможно преобразовать текст отображаемой метки в Double")
-        }
         
-        if let calcMethod = sender.currentTitle {
-            if calcMethod == "+/-" {
-                displayLabel.text = String(number * -1)
-            } else if calcMethod == "AC" {
-                displayLabel.text = "0"
-            } else if calcMethod == "%" {
-                displayLabel.text = String(number * 0.01)
-            }
-        }
+        
+       
         
     
     }
@@ -47,12 +49,9 @@ class ViewController: UIViewController {
                 isFinishedTypingNumber = false
             } else {
                 if numValue == "." {
-                    guard let currentDisplayValue = Double(displayLabel.text!) else {
-                        fatalError("Невозможно преобразовать текст отображаемой метки в Double!")
-                    }
-                            
                     
-                    let isInt = floor(currentDisplayValue) == currentDisplayValue
+                  
+                    let isInt = floor(displayValue) == displayValue
                     
                     if !isInt {
                         return
